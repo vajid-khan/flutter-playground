@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+import 'package:flutter_application_1/login/form.dart';
+import 'package:flutter_application_1/components/image.dart';
 import 'package:flutter_application_1/components/button.dart';
 import 'package:flutter_application_1/components/divider.dart';
-import 'package:flutter_application_1/components/image.dart';
-import 'package:flutter_application_1/login/form.dart';
 import 'package:flutter_application_1/login/social_logins.dart';
 
 void main() {
+	 SystemChrome.setSystemUIOverlayStyle(
+    SystemUiOverlayStyle.dark.copyWith(
+      statusBarColor: Colors.white,
+      systemNavigationBarColor: Colors.white,
+    ),
+  );
+
   runApp(const MyApp());
 }
 
