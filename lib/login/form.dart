@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/home/home.dart';
+import 'package:flutter_application_1/main.dart';
+import 'package:flutter_application_1/store/user_store.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get_it/get_it.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
@@ -14,6 +18,15 @@ class _LoginFormState extends State<LoginForm> {
   final _passwordController = TextEditingController();
   bool _obscurePassword = true;
 
+  final store = GetIt.instance<UserStore>();
+
+  @override
+  void initState() {
+    super.initState();
+    _emailController.text = 'vajidali@buddyboss.com';
+    _passwordController.text = 'VajidBB@0408';
+  }
+
   @override
   void dispose() {
     _emailController.dispose();
@@ -21,18 +34,31 @@ class _LoginFormState extends State<LoginForm> {
     super.dispose();
   }
 
-  void _handleSubmit() {
-    // if (_formKey.currentState!.validate()) {
-      // TODO: Implement login logic
-      print('Email: ${_emailController.text}');
-      print('Password: ${_passwordController.text}');
-      
-      // Navigate to Home screen
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const Home()),
-      );
-    // }
+  void _handleSubmit() async {
+    if (_formKey.currentState!.validate()) {
+      try {
+        final success = await store.login(
+          _emailController.text,
+          _passwordController.text,
+        );
+        
+        if (success) {
+          // Navigate to Home screen
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const Home()),
+          );
+        }
+      } catch (e) {
+        // Show error message
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(e.toString()),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
   }
 
   @override
@@ -91,16 +117,28 @@ class _LoginFormState extends State<LoginForm> {
             },
           ),
           const SizedBox(height: 24),
-          ElevatedButton(
-            onPressed: _handleSubmit,
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              backgroundColor: Theme.of(context).colorScheme.primary,
-              foregroundColor: Colors.white,
-            ),
-            child: const Text(
-              'Login',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          Observer(
+            builder: (context) => ElevatedButton(
+              onPressed: store.isLoading ? null : _handleSubmit,
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                backgroundColor: Theme.of(context).colorScheme.primary,
+                foregroundColor: Colors.white,
+              ),
+              child: store.isLoading
+                  ? const CircularProgressIndicator(
+                      color: Colors.white,
+                      strokeWidth: 2,
+                      strokeAlign: 2,
+                      constraints: BoxConstraints(minWidth: 20, minHeight: 20),
+                    )
+                  : const Text(
+                      'Login',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
             ),
           ),
         ],

@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get_it/get_it.dart';
 
 import 'package:flutter_application_1/login/form.dart';
 import 'package:flutter_application_1/components/image.dart';
 import 'package:flutter_application_1/components/button.dart';
 import 'package:flutter_application_1/components/divider.dart';
 import 'package:flutter_application_1/login/social_logins.dart';
+import 'package:flutter_application_1/store/user_store.dart';
+
+GetIt getIt = GetIt.instance;
 
 void main() {
 	 SystemChrome.setSystemUIOverlayStyle(
@@ -14,6 +18,9 @@ void main() {
       systemNavigationBarColor: Colors.white,
     ),
   );
+
+	getIt.registerSingleton<UserStore>(UserStore(),
+      signalsReady: true);
 
   runApp(const MyApp());
 }
@@ -49,7 +56,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  void _handleSubmit() {}
+  void _handleSubmit() {
+	}
 
   @override
   Widget build(BuildContext context) {

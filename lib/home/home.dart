@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/home/tab_1.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -11,7 +12,7 @@ class _HomeState extends State<Home> {
   int _selectedIndex = 0;
 
   final List<Widget> _screens = [
-    const Center(child: Text('Home Tab')),
+		Tab1(),
     const Center(child: Text('Search Tab')),
     const Center(child: Text('Notifications Tab')),
     const Center(child: Text('Profile Tab')),

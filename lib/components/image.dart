@@ -6,11 +6,13 @@ class BBImage extends StatelessWidget {
 		required this.size,
 		required this.url,
 		this.borderRadius,
+		this.isNetwork = false,
   });
 
 	final double size;
 	final String url;
 	final double? borderRadius;
+	final bool isNetwork;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +23,7 @@ class BBImage extends StatelessWidget {
 						decoration: BoxDecoration(
 							borderRadius: BorderRadius.circular(borderRadius??10),
 						),
-				child: Image.asset(url),
+				child: isNetwork ? Image.network(url) : Image.asset(url),
 			),
 		);
   }
