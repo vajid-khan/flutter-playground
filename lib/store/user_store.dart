@@ -1,6 +1,6 @@
+import 'dart:convert';
 import 'package:mobx/mobx.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 part 'user_store.g.dart';
 
@@ -45,6 +45,14 @@ abstract class UserStoreBase with Store {
     isLoading = value;
   }
 
+	@action
+  void logout() {
+    setAuth({});
+    setUser({});
+    setLoggedIn(false);
+    setLoading(false);
+  }
+
   @action
   Future<bool> login(String username, String password) async {
     try {
@@ -65,7 +73,6 @@ abstract class UserStoreBase with Store {
       if (response.statusCode == 200) {
         final auth = jsonDecode(response.body);
 				final member = await getMember(auth['user_id'], auth['access_token']);
-        print({auth, member});
 				setAuth(auth);
         setUser(member);
         setLoggedIn(true);

@@ -1,9 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_application_1/home/home.dart';
-import 'package:flutter_application_1/main.dart';
-import 'package:flutter_application_1/store/user_store.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+
+import 'package:flutter_application_1/store/user_store.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
@@ -20,12 +19,12 @@ class _LoginFormState extends State<LoginForm> {
 
   final store = GetIt.instance<UserStore>();
 
-  @override
-  void initState() {
-    super.initState();
-    _emailController.text = 'vajidali@buddyboss.com';
-    _passwordController.text = 'VajidBB@0408';
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _emailController.text = 'vajidali@buddyboss.com';
+  //   _passwordController.text = 'VajidBB@0408';
+  // }
 
   @override
   void dispose() {
@@ -44,10 +43,12 @@ class _LoginFormState extends State<LoginForm> {
         
         if (success) {
           // Navigate to Home screen
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => const Home()),
-          );
+          ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Login successful'),
+            backgroundColor: Colors.green,
+          ),
+        );
         }
       } catch (e) {
         // Show error message

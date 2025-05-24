@@ -20,9 +20,10 @@ class BBImage extends StatelessWidget {
 			child: Container(
 				height: size,
 				width: size,
-						decoration: BoxDecoration(
-							borderRadius: BorderRadius.circular(borderRadius??10),
-						),
+				clipBehavior: Clip.hardEdge,
+				decoration: BoxDecoration(
+					borderRadius: BorderRadius.circular(100),
+				),
 				child: isNetwork ? Image.network(url) : Image.asset(url),
 			),
 		);

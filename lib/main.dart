@@ -1,13 +1,11 @@
+import 'package:get_it/get_it.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get_it/get_it.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
-import 'package:flutter_application_1/login/form.dart';
-import 'package:flutter_application_1/components/image.dart';
-import 'package:flutter_application_1/components/button.dart';
-import 'package:flutter_application_1/components/divider.dart';
-import 'package:flutter_application_1/login/social_logins.dart';
+import 'package:flutter_application_1/home/home.dart';
 import 'package:flutter_application_1/store/user_store.dart';
+import 'package:flutter_application_1/login/login_screen.dart';
 
 GetIt getIt = GetIt.instance;
 
@@ -56,35 +54,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  void _handleSubmit() {
-	}
+	final store = GetIt.instance<UserStore>();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: SingleChildScrollView(
-          child: SafeArea(
-            child: Container(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                // mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const BBImage(size: 200, url: 'assets/bb_icon.png'),
-                  const LoginForm(),
-                  const BBDivider(size: 100),
-                  BBButton(
-                    onPressed: _handleSubmit,
-                    text: 'Sign Up',
-                    isPrimary: false,
-                  ),
-                  const BBDivider(size: 100),
-                  const SocialLogins(),
-                ],
-              ),
-            ),
-          ),
-        ),
+    return Observer(
+      builder: (context) => Scaffold(
+        body: store.isLoggedIn ? 	const	 Home() : const LoginScreen(),
       ),
     );
   }
