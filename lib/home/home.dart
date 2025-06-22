@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_application_1/home/tab_1.dart';
+import 'package:flutter_application_1/home/profile.dart';
+import 'package:flutter_application_1/presentation/dictionary.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -13,10 +14,10 @@ class _HomeState extends State<Home> {
   int _selectedIndex = 0;
 
   final List<Widget> _screens = [
-		Tab1(),
+    DictionaryScreen(),
     const Center(child: Text('Search Tab')),
     const Center(child: Text('Notifications Tab')),
-    const Center(child: Text('Profile Tab')),
+		Profile(),
   ];
 
   void _onItemTapped(int index) {

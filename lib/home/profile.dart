@@ -5,8 +5,8 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_application_1/components/image.dart';
 import 'package:flutter_application_1/store/user_store.dart';
 
-class Tab1 extends StatelessWidget {
-  Tab1({super.key});
+class Profile extends StatelessWidget {
+  Profile({super.key});
 
   final store = GetIt.instance<UserStore>();
 

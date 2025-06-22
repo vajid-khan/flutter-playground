@@ -19,12 +19,12 @@ class _LoginFormState extends State<LoginForm> {
 
   final store = GetIt.instance<UserStore>();
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _emailController.text = 'vajidali@buddyboss.com';
-  //   _passwordController.text = 'VajidBB@0408';
-  // }
+  @override
+  void initState() {
+    super.initState();
+    _emailController.text = 'vajidali@buddyboss.com';
+    _passwordController.text = 'VajidBB@0408';
+  }
 
   @override
   void dispose() {

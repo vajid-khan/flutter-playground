@@ -2,90 +2,55 @@ import 'dart:convert';
 import 'package:mobx/mobx.dart';
 import 'package:http/http.dart' as http;
 
-part 'user_store.g.dart';
+part 'dictionary_store.g.dart';
 
-class UserStore = UserStoreBase with _$UserStore;
+class DictionaryStore = DictionaryStoreBase with _$DictionaryStore;
 
-abstract class UserStoreBase with Store {
+abstract class DictionaryStoreBase with Store {
   @observable
   bool isLoading = false;
 
-  @observable
-  bool isLoggedIn = false;
 
   @observable
-  dynamic _auth = {};
+  dynamic data = {};
 
   @computed
-  dynamic get auth => _auth;
+  dynamic get posts => data;
+
 
   @action
-  void setAuth(dynamic authData) {
-    _auth = authData;
+  void setData(dynamic wordData) {
+    data = wordData;
   }
 
-  @observable
-  dynamic _user = {};
-
-  @computed
-  dynamic get user => _user;
-
-  @action
-  void setUser(dynamic userData) {
-    _user = userData;
-  }
-
-  @action
-  void setLoggedIn(bool value) {
-    isLoggedIn = value;
-  }
-
-  @action
+	@action
   void setLoading(bool value) {
     isLoading = value;
   }
 
-	@action
-  void logout() {
-    setAuth({});
-    setUser({});
-    setLoggedIn(false);
-    setLoading(false);
-  }
-
   @action
-  Future<bool> login(String username, String password) async {
+  Future<bool> getData(String word) async {
     try {
       setLoading(true);
 
-      final response = await http.post(
+print(word);
+      final response = await http.get(
         Uri.parse(
-          'https://qa-bbreleased01.hz1.developbb.dev/wp-json/buddyboss-app/auth/v2/jwt/login',
+          'https://api.dictionaryapi.dev/api/v2/entries/en/$word',
         ),
         headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({
-          'username': username,
-          'password': password,
-          'app_id': '3c560e',
-					'appLang': 'en',
-        }),
       );
 
       if (response.statusCode == 200) {
-        final auth = jsonDecode(response.body);
-				final member = await getMember(auth['user_id'], auth['access_token']);
-				setAuth(auth);
-        setUser(member);
-        setLoggedIn(true);
-        setLoading(false);
+       setData(jsonDecode(response.body)[0]);
+			//  print(jsonDecode(response.body)[0]['word'].toString());
         return true;
       } else {
         // Handle error response
         final error = jsonDecode(response.body);
-        throw Exception(error['message'] ?? 'Login failed');
+        throw Exception(error['message'] ?? 'Server Error');
       }
     } catch (e) {
-      setLoggedIn(false);
       rethrow;
     } finally {
       setLoading(false);
